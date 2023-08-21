@@ -4,9 +4,12 @@ import com.supermarketSouza.SupermarketSouza.request.ProductBoughtDTO;
 import com.supermarketSouza.SupermarketSouza.request.ProductSellDTO;
 import com.supermarketSouza.SupermarketSouza.service.ProductService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,18 +28,15 @@ public class ProductController {
   }
 
   @PostMapping("/product-sold")
-  public ResponseEntity<Object> productSold(@RequestBody @Valid ProductSellDTO productSellDTO){
+  public ResponseEntity<Object> productSold(@RequestBody @Valid List<ProductSellDTO> productSellDTO){
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProductSold(productSellDTO));
 
   }
 
-/*  @PutMapping("/{codeProduct}")
-  public ResponseEntity<Object> updateProduct(@PathVariable(value = "codeProduct") String codeProduct,
-                                                  @RequestBody ProductDTO request){
-    Optional<ProductBoughtModel> productModelOptional = productService.findCodeProduct(codeProduct);
-    return productModelOptional.map(productModel -> ResponseEntity.status(HttpStatus.OK)
-            .body(productService.updateProductQuantity(productModel, request)))
-        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found."));
-  }*/
+  @GetMapping("/{codeProduct}/get-price")
+  public ResponseEntity<Object> getPrice(@PathVariable String codeProduct){
+    return ResponseEntity.status(HttpStatus.CREATED).body(productService.getPrice(codeProduct));
+
+  }
 
 }

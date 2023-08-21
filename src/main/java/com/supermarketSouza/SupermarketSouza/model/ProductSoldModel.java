@@ -1,33 +1,40 @@
 package com.supermarketSouza.SupermarketSouza.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_PRODUCT_SELL")
+@Table(name = "TB_PRODUCT_SOLD")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductToSellModel {
+@Builder
+public class ProductSoldModel implements Serializable {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private UUID productBoughtId;
+
   private String codeProduct;
 
   private String nameProduct;
 
-  private long productQuantityToSell;
-
   private long productQuantitySold;
 
-  private BigDecimal priceProductToSell;
+  private BigDecimal priceProductSold;
 
   private LocalDateTime registrationDateSold;
 

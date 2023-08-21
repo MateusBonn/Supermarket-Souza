@@ -1,14 +1,11 @@
 package com.supermarketSouza.SupermarketSouza.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,28 +13,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_PRODUCT_BOUGHT")
+@Table(name = "TB_PRODUCT_STORAGE")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductBoughtModel implements Serializable {
+public class ProductStorageModel implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID productBoughtId;
-
+  @Column(name = "code_product", unique = true)
   private String codeProduct;
 
+  @Column(name = "name_product")
   private String nameProduct;
 
-  private long productQuantityBought;
+  @Column(name = "product_quantity")
+  private long productQuantity;
 
-  private BigDecimal priceProductBought;
-
-  private BigDecimal priceProductToSell;
-
-  private LocalDateTime registrationDate;
+  @Column(name = "registration_date_last_update")
+  private LocalDateTime registrationDateLastUpdate;
 
 }
