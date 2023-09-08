@@ -15,4 +15,6 @@ public class ProductSellDTO {
 
   private Long productQuantitySold;
 
+  private Long value;
+
 }

@@ -5,13 +5,14 @@ import com.supermarketSouza.SupermarketSouza.model.LoginModel;
 import com.supermarketSouza.SupermarketSouza.repositories.LoginRepository;
 import com.supermarketSouza.SupermarketSouza.request.LoginDTO;
 import com.supermarketSouza.SupermarketSouza.request.LoginSaveDTO;
-import com.supermarketSouza.SupermarketSouza.response.LoginResponse;
+import com.supermarketSouza.SupermarketSouza.response.SecurityResponse;
+import com.supermarketSouza.SupermarketSouza.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,33 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 
   final LoginRepository loginRepository;
-  final AuthenticationManager authenticationManager;
-  final TokenService tokenService;
+  final LoginService loginService;
+
 
   @PostMapping("/login")
-  public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
-    var usernamePassword =
-        new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
-                                                loginDTO.getPassword());
-    var auth = this.authenticationManager.authenticate(usernamePassword);
-
-    var token = tokenService.generateToken((LoginModel) auth.getPrincipal());
-
-    return ResponseEntity.ok(new LoginResponse(token));
-  }
-  @PostMapping("/login-admin")
-  public ResponseEntity loginAdm(@RequestBody LoginDTO loginDTO) {
-    var usernamePassword =
-        new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
-                                                loginDTO.getPassword());
-    var auth = this.authenticationManager.authenticate(usernamePassword);
-
-    var token = tokenService.generateToken((LoginModel) auth.getPrincipal());
-
-    return ResponseEntity.ok(new LoginResponse(token));
+  public ResponseEntity<SecurityResponse> login(@RequestBody LoginDTO loginDTO) {
+    return ResponseEntity.ok(loginService.login(loginDTO));
   }
 
   @PostMapping("/register")
@@ -63,5 +47,7 @@ public class LoginController {
                                   );
     return ResponseEntity.status(HttpStatus.CREATED).body("Login Created");
   }
+
+
 }
 

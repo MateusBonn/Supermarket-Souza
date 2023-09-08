@@ -25,7 +25,6 @@ public class ProductBoughtDTO {
   @NotNull(message = "Price Bought of product can't be null")
   private BigDecimal priceProductBought;
 
-  @NotNull(message = "Price to Sell of product can't be null")
   private BigDecimal priceProductToSell;
 
 }

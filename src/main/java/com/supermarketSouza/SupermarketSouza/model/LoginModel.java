@@ -25,6 +25,9 @@ public class LoginModel implements  UserDetails {
   @Id
   private String cpf;
 
+  @Column(nullable = false, unique = true, length = 100)
+  private String fullName;
+
   @Column(nullable = false, unique = true, length = 10)
   private String username;
 

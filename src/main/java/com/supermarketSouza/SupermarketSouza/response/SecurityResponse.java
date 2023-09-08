@@ -1,12 +1,14 @@
 package com.supermarketSouza.SupermarketSouza.response;
 
 import com.supermarketSouza.SupermarketSouza.model.UserRole;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+@AllArgsConstructor
 @Builder
-public class LoginResponse {
+public class SecurityResponse {
 
-  public String firstName;
+  public LoginResponse login;
 
-  public UserRole role;
+  public AutenticatedResponse token;
 }
