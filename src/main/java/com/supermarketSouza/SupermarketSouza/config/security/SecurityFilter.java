@@ -1,13 +1,20 @@
 package com.supermarketSouza.SupermarketSouza.config.security;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supermarketSouza.SupermarketSouza.repositories.LoginRepository;
+import com.supermarketSouza.SupermarketSouza.response.ErrorMessage;
+import com.supermarketSouza.SupermarketSouza.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,19 +28,29 @@ public class SecurityFilter extends OncePerRequestFilter {
 
   final TokenService tokenService;
   final LoginRepository loginRepository;
+  final UserDetailsServiceImpl userDetailsService;
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    log.info("doFilterInternal");
-    var token = this.recoverToken(request);
-    if(token != null) {
-      var login = tokenService.validateToken(token);
-      UserDetails user = loginRepository.findByUsername(login);
+    try {
+      log.info("doFilterInternal");
+      var token = this.recoverToken(request);
+      if (token != null) {
+        var login = tokenService.validateToken(token);
+        UserDetails user = userDetailsService.loadUserByUsername(login);
 
-      var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+        var authentication = new UsernamePasswordAuthenticationToken(user,
+                                                                     null,
+                                                                     user.getAuthorities());
+        //log.info(String.valueOf(SecurityContextHolder.getContext().setAuthentication(authentication)));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+      }
+      filterChain.doFilter(request, response);
+    }catch (TokenExpiredException e) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+      response.getOutputStream().println("Token expired");
     }
-    filterChain.doFilter(request, response);
   }
 
   private String recoverToken(HttpServletRequest request) {

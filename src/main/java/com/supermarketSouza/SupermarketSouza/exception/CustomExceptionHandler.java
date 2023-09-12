@@ -1,5 +1,7 @@
 package com.supermarketSouza.SupermarketSouza.exception;
 
+
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.supermarketSouza.SupermarketSouza.response.ErrorMessage;
 import java.util.Date;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,11 @@ public class CustomExceptionHandler {
   @ExceptionHandler(AuthenticationException.class)
   public ResponseEntity<ErrorMessage> handleAuthenticationException(AuthenticationException e) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage(new Date(), e.getCause(), "Login ou senha inválidos"));
+  }
+
+  @ExceptionHandler(TokenExpiredException.class)
+  public ResponseEntity<ErrorMessage> handleTokenValidationException(TokenExpiredException  e) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage(new Date(), e.getCause(), "Token inválido ou expirado"));
   }
 }
 

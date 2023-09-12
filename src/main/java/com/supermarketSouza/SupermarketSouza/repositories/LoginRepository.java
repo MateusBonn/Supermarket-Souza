@@ -1,7 +1,6 @@
 package com.supermarketSouza.SupermarketSouza.repositories;
 
 import com.supermarketSouza.SupermarketSouza.model.LoginModel;
-import com.supermarketSouza.SupermarketSouza.model.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

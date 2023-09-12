@@ -1,5 +1,6 @@
 package com.supermarketSouza.SupermarketSouza.controller;
 
+import com.supermarketSouza.SupermarketSouza.model.ProductBoughtModel;
 import com.supermarketSouza.SupermarketSouza.request.ProductBoughtDTO;
 import com.supermarketSouza.SupermarketSouza.request.ProductSellDTO;
 import com.supermarketSouza.SupermarketSouza.service.ProductService;
@@ -26,7 +27,8 @@ public class ProductController {
 
 
   @PostMapping("/add-product")
-  public ResponseEntity<Object> addProduct(@RequestBody @Valid ProductBoughtDTO request) {
+  // Set to receive a List
+  public ResponseEntity<ProductBoughtModel> addProduct(@RequestBody @Valid ProductBoughtDTO request) {
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(request));
   }
 
@@ -38,8 +40,7 @@ public class ProductController {
 
   @GetMapping("/{codeProduct}/get-price")
   public ResponseEntity<Object> getPrice(@PathVariable String codeProduct){
-    return ResponseEntity.status(HttpStatus.CREATED).body(productService.getPrice(codeProduct));
-
+    return ResponseEntity.status(HttpStatus.OK).body(productService.getPrice(codeProduct));
   }
 
 }

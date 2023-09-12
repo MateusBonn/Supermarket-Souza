@@ -8,7 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorMessage {
+public class ErrorMessage extends Throwable {
+
+  public ErrorMessage(Date timestamp, String message) {
+    this.timestamp = timestamp;
+    this.message = message;
+  }
 
   private Date timestamp;
   private Throwable cause;

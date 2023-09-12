@@ -28,13 +28,13 @@ public class LoginModel implements  UserDetails {
   @Column(nullable = false, unique = true, length = 100)
   private String fullName;
 
-  @Column(nullable = false, unique = true, length = 10)
+  @Column(nullable = false, unique = true, length = 20)
   private String username;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = false)
   private String password;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = false)
   private UserRole role;
 
   @Override

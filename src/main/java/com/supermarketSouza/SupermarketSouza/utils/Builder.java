@@ -1,6 +1,7 @@
 package com.supermarketSouza.SupermarketSouza.utils;
 
 import com.supermarketSouza.SupermarketSouza.model.LoginModel;
+import com.supermarketSouza.SupermarketSouza.model.RefreshToken;
 import com.supermarketSouza.SupermarketSouza.repositories.LoginRepository;
 import com.supermarketSouza.SupermarketSouza.request.LoginDTO;
 import com.supermarketSouza.SupermarketSouza.response.AutenticatedResponse;
@@ -22,10 +23,10 @@ public class Builder {
             .build();
   }
 
-  public AutenticatedResponse autenticatedResponse(String accessToken, String refreshToken){
+  public AutenticatedResponse autenticatedResponse(String accessToken, RefreshToken refreshToken){
     return AutenticatedResponse.builder()
         .accessToken(accessToken)
-        .refreshToken(refreshToken)
+        .refreshToken(refreshToken.getToken())
         .build();
   }
 

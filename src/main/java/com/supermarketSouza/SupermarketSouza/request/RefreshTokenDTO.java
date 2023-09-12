@@ -1,7 +1,6 @@
 package com.supermarketSouza.SupermarketSouza.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,10 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDTO {
+public class RefreshTokenDTO {
 
-  private String username;
-
-  private String password;
+  private String token;
 
 }

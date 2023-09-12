@@ -27,7 +27,7 @@ import lombok.Setter;
 public class RefreshToken {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
 
   private String token;
@@ -35,7 +35,7 @@ public class RefreshToken {
   private Instant expiryDate;
 
   @OneToOne
-  @JoinColumn(name="cpf", referencedColumnName = "id")
+  @JoinColumn(name="cpf", referencedColumnName = "cpf")
   private LoginModel login;
 
 }

@@ -45,10 +45,12 @@ public class WebSecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth ->
                                     auth
+                                        .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
                                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
+
                                         .requestMatchers(HttpMethod.POST,"/auth/register").hasRole("ADMIN")
-                                        .anyRequest().authenticated())
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                                        .anyRequest().permitAll())
+      .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
 
