@@ -1,28 +1,21 @@
 package com.supermarketSouza.SupermarketSouza.service;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.supermarketSouza.SupermarketSouza.exception.TokenValidationException;
 import com.supermarketSouza.SupermarketSouza.model.LoginModel;
 import com.supermarketSouza.SupermarketSouza.model.RefreshToken;
 import com.supermarketSouza.SupermarketSouza.repositories.LoginRepository;
 import com.supermarketSouza.SupermarketSouza.repositories.RefreshTokenRepository;
-import com.supermarketSouza.SupermarketSouza.response.ErrorMessage;
-import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 @Service

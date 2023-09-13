@@ -2,7 +2,7 @@ package com.supermarketSouza.SupermarketSouza.service;
 
 import com.supermarketSouza.SupermarketSouza.mapper.ProductMapper;
 import com.supermarketSouza.SupermarketSouza.model.ProductBoughtModel;
-import com.supermarketSouza.SupermarketSouza.repositories.ProductBoughtCustomRepository;
+import com.supermarketSouza.SupermarketSouza.repositories.custom.ProductBoughtCustomRepository;
 import com.supermarketSouza.SupermarketSouza.repositories.ProductBoughtRepository;
 import com.supermarketSouza.SupermarketSouza.repositories.ProductSoldRepository;
 import com.supermarketSouza.SupermarketSouza.repositories.ProductStorageRepository;
@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -27,20 +28,25 @@ public class ProductService {
   final ProductBoughtCustomRepository productBoughtCustomRepository;
 
   @Transactional
-  public ProductBoughtModel saveProduct(ProductBoughtDTO request) {
-    request.setNameProduct(request.getNameProduct().toUpperCase());
-    var productBoughtModel = new ProductBoughtModel();
-    productBoughtModel.setRegistrationDate(LocalDateTime.now());
-    BeanUtils.copyProperties(request, productBoughtModel);
-    var storage = productStorageRepository.findByCodeProduct(productBoughtModel.getCodeProduct());
-    if(storage.isPresent()){
-      productBoughtModel.setProductQuantityBought(storage.get().getProductQuantity() + productBoughtModel.getProductQuantityBought()); ;
-    }
-    productStorageRepository.save(productMapper.toEntityProductStorage(productBoughtModel));
-    productBoughtModel.setProductQuantityBought(request.getProductQuantityBought());
-    return productBoughtRepository.save(productBoughtModel);
+  public List<ProductBoughtModel> saveProduct(List<ProductBoughtDTO> request) {
 
+    return request.stream()
+        .map(productBought -> {
+          productBought.setNameProduct(productBought.getNameProduct().toUpperCase());
 
+          var productBoughtModel = new ProductBoughtModel();
+          productBoughtModel.setRegistrationDate(LocalDateTime.now());
+          BeanUtils.copyProperties(productBought, productBoughtModel);
+
+          var storage = productStorageRepository.findByCodeProduct(productBoughtModel.getCodeProduct());
+          storage.ifPresent(productStorageModel -> productBoughtModel.setProductQuantityBought(
+              productStorageModel.getProductQuantity() + productBoughtModel.getProductQuantityBought()));
+
+          productStorageRepository.save(productMapper.toEntityProductStorage(productBoughtModel));
+          productBoughtModel.setProductQuantityBought(productBought.getProductQuantityBought());
+          return productBoughtRepository.save(productBoughtModel);
+        })
+        .collect(Collectors.toList());
   }
 
   public BigDecimal saveProductSold(List<ProductSellDTO> productSellDTO) {

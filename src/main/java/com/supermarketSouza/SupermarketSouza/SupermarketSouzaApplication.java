@@ -16,8 +16,6 @@ public class SupermarketSouzaApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(SupermarketSouzaApplication.class, args);
-		System.out.print("Hora de validação do Bearer");
-		System.out.println(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")));
 	}
 
 	@Bean

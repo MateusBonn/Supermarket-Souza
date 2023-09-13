@@ -27,8 +27,7 @@ public class ProductController {
 
 
   @PostMapping("/add-product")
-  // Set to receive a List
-  public ResponseEntity<ProductBoughtModel> addProduct(@RequestBody @Valid ProductBoughtDTO request) {
+  public ResponseEntity<List<ProductBoughtModel>> addProduct(@RequestBody @Valid List<ProductBoughtDTO> request) {
     return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(request));
   }
 

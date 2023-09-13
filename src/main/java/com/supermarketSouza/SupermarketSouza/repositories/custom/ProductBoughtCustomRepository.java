@@ -1,4 +1,4 @@
-package com.supermarketSouza.SupermarketSouza.repositories;
+package com.supermarketSouza.SupermarketSouza.repositories.custom;
 
 
 import com.supermarketSouza.SupermarketSouza.model.ProductBoughtModel;

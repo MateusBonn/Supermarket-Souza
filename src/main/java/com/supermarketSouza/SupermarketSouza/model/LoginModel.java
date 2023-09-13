@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
 import lombok.*;
-import java.io.Serializable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

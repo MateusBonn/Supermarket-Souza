@@ -1,6 +1,5 @@
 package com.supermarketSouza.SupermarketSouza.response;
 
-import com.supermarketSouza.SupermarketSouza.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
