@@ -33,5 +33,4 @@ public class ProductStorageModel implements Serializable {
 
   @Column(name = "registration_date_last_update")
   private LocalDateTime registrationDateLastUpdate;
-
 }

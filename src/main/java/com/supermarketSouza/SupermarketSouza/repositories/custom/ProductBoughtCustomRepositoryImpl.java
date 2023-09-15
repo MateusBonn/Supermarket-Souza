@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductBoughtCustomRepository{
+public class ProductBoughtCustomRepositoryImpl {
 
   @PersistenceContext
   private EntityManager entityManager;

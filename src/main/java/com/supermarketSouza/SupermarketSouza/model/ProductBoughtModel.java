@@ -39,5 +39,4 @@ public class ProductBoughtModel implements Serializable {
   private BigDecimal priceProductToSell;
 
   private LocalDateTime registrationDate;
-
 }
