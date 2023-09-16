@@ -2,9 +2,7 @@ package com.supermarketSouza.SupermarketSouza.exception;
 
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.supermarketSouza.SupermarketSouza.response.ErrorMessage;
 import jakarta.persistence.NoResultException;
-import java.util.Date;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,23 +14,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CustomExceptionHandler {
 
   @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<ErrorMessage> handleBadCredentialsException(BadCredentialsException e) {
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage(new Date(), e.getCause(), "Erro ao autenticar login"));
+  public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
   }
 
   @ExceptionHandler(AuthenticationException.class)
-  public ResponseEntity<ErrorMessage> handleAuthenticationException(AuthenticationException e) {
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage(new Date(), e.getCause(), "Login ou senha inválidos"));
+  public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
   }
 
   @ExceptionHandler(TokenExpiredException.class)
-  public ResponseEntity<ErrorMessage> handleTokenValidationException(TokenExpiredException  e) {
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage(new Date(), e.getCause(), "Token inválido ou expirado"));
+  public ResponseEntity<String> handleTokenValidationException(TokenExpiredException  e) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
   }
 
   @ExceptionHandler(NoResultException.class)
-  public ResponseEntity<ErrorMessage> handleResultException(NoResultException  e) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(new Date(), e.getCause(), "Produto não encontrado no banco de dados"));
+  public ResponseEntity<String> handleResultException(NoResultException  e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+  }
+
+  @ExceptionHandler(ProductStorageException.class)
+  public ResponseEntity<String> handleResultException(ProductStorageException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
   }
 }
 

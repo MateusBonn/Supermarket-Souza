@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductStorageRepository extends JpaRepository<ProductStorageModel, String> {
+public interface ProductStorageRepository extends ProductStorageCustomRepository ,JpaRepository<ProductStorageModel, String> {
 
   Optional<ProductStorageModel> findByCodeProduct(String codeProduct);
 

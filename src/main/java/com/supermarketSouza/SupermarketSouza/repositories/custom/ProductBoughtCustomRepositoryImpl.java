@@ -2,6 +2,7 @@ package com.supermarketSouza.SupermarketSouza.repositories.custom;
 
 
 import com.supermarketSouza.SupermarketSouza.model.ProductBoughtModel;
+import com.supermarketSouza.SupermarketSouza.repositories.ProductBoughtCustomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductBoughtCustomRepositoryImpl {
+public class ProductBoughtCustomRepositoryImpl implements ProductBoughtCustomRepository {
 
   @PersistenceContext
   private EntityManager entityManager;
