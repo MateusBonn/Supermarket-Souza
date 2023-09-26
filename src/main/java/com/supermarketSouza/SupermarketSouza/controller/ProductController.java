@@ -49,9 +49,9 @@ public class ProductController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<StorageResponse>> searchProducts(@Valid PageFilter pageFilter,
+  public ResponseEntity<String> searchProducts(@Valid PageFilter pageFilter,
                                                               @RequestParam(value = "searchBy", required = false) List<String> searchBy) throws ProductStorageException {
-    return null; //ResponseEntity.status(HttpStatus.OK).body(productService.searchProducts(pageFilter, searchBy));
+    return ResponseEntity.status(HttpStatus.OK).body("teste");
   }
 
 
