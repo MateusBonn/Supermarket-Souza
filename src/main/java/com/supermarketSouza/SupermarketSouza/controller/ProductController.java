@@ -6,6 +6,7 @@ import com.supermarketSouza.SupermarketSouza.request.ProductBoughtDTO;
 import com.supermarketSouza.SupermarketSouza.request.ProductSellDTO;
 import com.supermarketSouza.SupermarketSouza.response.StorageResponse;
 import com.supermarketSouza.SupermarketSouza.service.ProductService;
+import com.supermarketSouza.SupermarketSouza.utils.PageFilter;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +49,9 @@ public class ProductController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<StorageResponse>> searchProducts(
-      @RequestParam(required = false) String codeProduct,
-      @RequestParam(required = false) String nameProduct) throws ProductStorageException {
-    return ResponseEntity.status(HttpStatus.OK).body(productService.searchProducts(codeProduct, nameProduct));
+  public ResponseEntity<List<StorageResponse>> searchProducts(@Valid PageFilter pageFilter,
+                                                              @RequestParam(value = "searchBy", required = false) List<String> searchBy) throws ProductStorageException {
+    return null; //ResponseEntity.status(HttpStatus.OK).body(productService.searchProducts(pageFilter, searchBy));
   }
 
 

@@ -11,6 +11,7 @@ import com.supermarketSouza.SupermarketSouza.repositories.ProductStorageReposito
 import com.supermarketSouza.SupermarketSouza.request.ProductBoughtDTO;
 import com.supermarketSouza.SupermarketSouza.request.ProductSellDTO;
 import com.supermarketSouza.SupermarketSouza.response.StorageResponse;
+import com.supermarketSouza.SupermarketSouza.utils.PageFilter;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
@@ -82,16 +83,13 @@ public class ProductService {
     return productSellList.stream().map(productSoldModel -> productSoldModel.orElse(null)).collect(Collectors.toList());
   }
 
-  public List<StorageResponse> searchProducts(String codeProduct, String nameProduct) throws ProductStorageException {
-    if(nameProduct != null){
-      nameProduct = nameProduct.toUpperCase();
-    }
-    var response = productStorageRepository.findProductInfo(codeProduct, nameProduct);
+/*  public List<StorageResponse> searchProducts(PageFilter pageFilter, List<String> searchBy) throws ProductStorageException {
+    var response = productStorageRepository.findAll(pageFilter, searchBy);
 
     if (response.isEmpty()){
       throw new ProductStorageException("No data found" );
     }
 
     return response;
-  }
+  }*/
 }

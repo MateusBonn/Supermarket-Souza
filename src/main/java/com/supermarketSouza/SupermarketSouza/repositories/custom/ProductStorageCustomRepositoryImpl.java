@@ -1,46 +1,71 @@
 package com.supermarketSouza.SupermarketSouza.repositories.custom;
 
 import com.supermarketSouza.SupermarketSouza.repositories.ProductStorageCustomRepository;
-import com.supermarketSouza.SupermarketSouza.response.StorageResponse;
-import java.math.BigDecimal;
-import java.util.stream.Collectors;
+import com.supermarketSouza.SupermarketSouza.repositories.utils.QueryHolder;
+import com.supermarketSouza.SupermarketSouza.response.ProductFound;
+import com.supermarketSouza.SupermarketSouza.repositories.utils.OrderByAndPaginationBuilder;
+import com.supermarketSouza.SupermarketSouza.utils.PageFilter;
+import com.supermarketSouza.SupermarketSouza.repositories.utils.SearchByBuilder;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-
 import java.util.List;
+import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Slf4j
+@RequiredArgsConstructor
 public class ProductStorageCustomRepositoryImpl implements ProductStorageCustomRepository {
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  private final NamedParameterJdbcTemplate jdbcTemplate;
 
-  @Override
-  public List<StorageResponse> findProductInfo(String codeProduct, String nameProduct) {
-    String jpql = "SELECT s.codeProduct, s.nameProduct, b.priceProductToSell "
-        +"FROM ProductStorageModel s "
-        +"JOIN ProductBoughtModel b ON s.codeProduct = b.codeProduct "
-        +"WHERE (:codeProduct IS NULL OR s.codeProduct LIKE CONCAT('%', :codeProduct, '%')) "
-        +"AND (:nameProduct IS NULL OR s.nameProduct LIKE CONCAT('%', :nameProduct, '%'))";
+    private Map<String, String> closingPeriodDictionary() {
+      return Map.ofEntries(
+          Map.entry("code", "code_product"),
+          Map.entry("name", "name_product"));
+    }
 
-    TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class)
-        .setParameter("codeProduct", codeProduct)
-        .setParameter("nameProduct", nameProduct);
+    public List<ProductFound> findAll(PageFilter pageFilter, List<String> searchBy) {
+      QueryHolder queryHolderSearch = SearchByBuilder.buildGenericSearchBy(pageFilter.getSearch(), searchBy, closingPeriodDictionary());
+
+      StringBuilder sql = new StringBuilder()
+          .append(buildSqlFindAll())
+          .append(queryHolderSearch.getSqlQuery())
+          .append(OrderByAndPaginationBuilder.buildSortAndPagination(pageFilter.toPageable()));
 
 
+      return null;// jdbcTemplate.query(sql.toString(), queryHolderSearch.getMapParams(), new ProductQueryObjectMapper());
+    }
 
+    public long count() {
+      StringBuilder sql = new StringBuilder("SELECT COUNT(1) ")
+          .append(buildFromFindAll());
 
-    return  query.getResultList().stream()
-            .map(row -> StorageResponse.builder()
-              .codeProduct((String) row[0])
-              .nameProduct((String) row[1])
-              .priceProduct((BigDecimal) row[2])
-              .build()).collect(Collectors.toList());
+      return jdbcTemplate.queryForObject(sql.toString(), new EmptySqlParameterSource(), Long.class);
+    }
 
-  }
+    private String buildSqlFindAll() {
+      return new StringBuilder()
+          .append(buildSelectSql())
+          .append(buildFromFindAll())
+          .toString();
+    }
+
+    private String buildSelectSql() {
+      return new StringBuilder()
+          .append("SELECT ")
+          .append(" s.code_product as code, ")
+          .append(" s.name_product as name, ")
+          .append(" b.price_product_to_sell as price ")
+          .toString();
+    }
+
+    private String buildFromFindAll() {
+      return new StringBuilder()
+          .append(" FROM TB_PRODUCT_STORAGE s ")
+          .append(" JOIN tb_product_bought b ON s.code_product = b.code_product")
+          .toString();
+    }
 }
