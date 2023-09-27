@@ -23,8 +23,7 @@ public class SupermarketSouzaApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/login").allowedOrigins("http://localhost:3000");
-
+				registry.addMapping("/login").allowedOrigins("https://master--prismatic-moonbeam-fbdcb2.netlify.app/");
 			}
 		};
 	}
