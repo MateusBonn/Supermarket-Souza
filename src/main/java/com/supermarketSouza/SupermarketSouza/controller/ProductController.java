@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/supermercado-souza/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://master--prismatic-moonbeam-fbdcb2.netlify.app/")
+@CrossOrigin(origins = "https://master--prismatic-moonbeam-fbdcb2.netlify.app")
 public class ProductController {
 
   private final ProductService productService;
