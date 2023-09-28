@@ -1,12 +1,12 @@
 package com.supermarketSouza.SupermarketSouza.utils;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +16,7 @@ import org.springframework.data.domain.Sort.Order;
 /**
  * Default fields to request a page.
  *
- * @author Daniela Araujo
+ * @author Mateus Bonn
  */
 public class PageFilter {
 

@@ -32,13 +32,13 @@ public final class SearchByBuilder {
     int index = 0;
 
     if (StringUtils.hasText(search) && !CollectionUtils.isEmpty(filteredSearchBy)) {
-      sql.append(startWithAnd ? " and (" : " (");
+      sql.append(startWithAnd ? " AND (" : " (");
       for (String column : filteredSearchBy) {
         boolean isLastColumn = filteredSearchBy.size() - index == 1;
 
         sql.append("upper(")
             .append(mapColumn.get(column))
-            .append("::text) like '%' || upper(:search) || '%'")
+            .append(") like concat ('%', upper(:search), '%')")
             .append(isLastColumn ? " ) " : " or ");
         index++;
       }

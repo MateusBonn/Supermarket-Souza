@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "https://master--prismatic-moonbeam-fbdcb2.netlify.app")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 
   final LoginRepository loginRepository;

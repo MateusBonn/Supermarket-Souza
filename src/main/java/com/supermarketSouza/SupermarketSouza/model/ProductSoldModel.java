@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "TB_PRODUCT_SOLD")
@@ -36,6 +37,7 @@ public class ProductSoldModel implements Serializable {
 
   private BigDecimal priceProductSold;
 
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime registrationDateSold;
 
 }

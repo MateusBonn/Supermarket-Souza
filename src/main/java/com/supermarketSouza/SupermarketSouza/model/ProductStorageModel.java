@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "TB_PRODUCT_STORAGE")
@@ -32,5 +33,6 @@ public class ProductStorageModel implements Serializable {
   private long productQuantity;
 
   @Column(name = "registration_date_last_update")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime registrationDateLastUpdate;
 }

@@ -10,8 +10,7 @@ import com.supermarketSouza.SupermarketSouza.utils.PageFilter;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/supermercado-souza/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://master--prismatic-moonbeam-fbdcb2.netlify.app")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
 
   private final ProductService productService;
@@ -49,9 +48,9 @@ public class ProductController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<String> searchProducts(@Valid PageFilter pageFilter,
+  public ResponseEntity<Page<StorageResponse>> searchProducts(@Valid PageFilter pageFilter,
                                                               @RequestParam(value = "searchBy", required = false) List<String> searchBy) throws ProductStorageException {
-    return ResponseEntity.status(HttpStatus.OK).body("teste");
+    return ResponseEntity.status(HttpStatus.OK).body(productService.searchProducts(pageFilter, searchBy));
   }
 
 

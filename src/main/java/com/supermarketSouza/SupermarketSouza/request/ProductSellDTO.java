@@ -2,6 +2,7 @@ package com.supermarketSouza.SupermarketSouza.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,8 @@ public class ProductSellDTO {
   @NotNull(message = "Code of product can't be null")
   private String codeProduct;
 
-  private Long productQuantitySold;
+  private String nameProduct;
 
-  private Long value;
+  private BigDecimal priceProduct;
 
 }

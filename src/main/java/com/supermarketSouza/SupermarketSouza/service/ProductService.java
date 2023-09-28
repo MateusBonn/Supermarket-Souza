@@ -4,7 +4,6 @@ import com.supermarketSouza.SupermarketSouza.exception.ProductStorageException;
 import com.supermarketSouza.SupermarketSouza.mapper.ProductMapper;
 import com.supermarketSouza.SupermarketSouza.model.ProductBoughtModel;
 import com.supermarketSouza.SupermarketSouza.model.ProductSoldModel;
-import com.supermarketSouza.SupermarketSouza.repositories.custom.ProductBoughtCustomRepositoryImpl;
 import com.supermarketSouza.SupermarketSouza.repositories.ProductBoughtRepository;
 import com.supermarketSouza.SupermarketSouza.repositories.ProductSoldRepository;
 import com.supermarketSouza.SupermarketSouza.repositories.ProductStorageRepository;
@@ -16,14 +15,13 @@ import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -54,6 +52,12 @@ public class ProductService {
         })
         .toList();
     productStorageRepository.saveAll(productMapper.toEntityProductStorage(productBoughtList));
+    productBoughtList.forEach(productBoughtModel -> {
+      var productBought = request.stream()
+          .filter(productBoughtDTO -> productBoughtDTO.getCodeProduct().equals(productBoughtModel.getCodeProduct()))
+          .findFirst();
+      productBought.ifPresent(productBoughtDTO -> productBoughtModel.setProductQuantityBought(productBoughtDTO.getProductQuantityBought()));
+    });
     return productBoughtRepository.saveAll(productBoughtList);
 
   }
@@ -62,7 +66,7 @@ public class ProductService {
    var productSoldOptional = productSellDTO.stream().map(
            productSell -> productStorageRepository.findByCodeProduct(productSell.getCodeProduct())
            .map(productSold -> {
-             productSold.setProductQuantity(productSold.getProductQuantity() - productSell.getProductQuantitySold());
+             productSold.setProductQuantity(productSold.getProductQuantity() - 1);
              var storage = productStorageRepository.save(productSold);
              var price = getPrice(storage.getCodeProduct());
              return productMapper.toEntityProductSold(productSold, productSell, price);
@@ -83,13 +87,15 @@ public class ProductService {
     return productSellList.stream().map(productSoldModel -> productSoldModel.orElse(null)).collect(Collectors.toList());
   }
 
-/*  public List<StorageResponse> searchProducts(PageFilter pageFilter, List<String> searchBy) throws ProductStorageException {
+  public Page<StorageResponse> searchProducts(PageFilter pageFilter, List<String> searchBy) throws ProductStorageException {
     var response = productStorageRepository.findAll(pageFilter, searchBy);
 
     if (response.isEmpty()){
       throw new ProductStorageException("No data found" );
     }
 
-    return response;
-  }*/
+    var count = productStorageRepository.count(pageFilter, searchBy);
+
+    return new PageImpl<>(productMapper.toResponse(response), pageFilter.toPageable(), count);
+  }
 }
